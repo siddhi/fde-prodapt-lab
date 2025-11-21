@@ -11,7 +11,8 @@ async def health():
     with get_db_session() as session:
         session.execute(text("SELECT 1"))
         return {"database": "ok"}
-  except:
+  except Exception as e:
+    print(e)
     return {"database": "down"}
 
 @app.get("/")

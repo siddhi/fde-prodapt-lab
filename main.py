@@ -1,11 +1,18 @@
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.staticfiles import StaticFiles
+from sqlalchemy import text
+from db import get_db_session
 
 app = FastAPI()
 
 @app.get("/health")
 async def health():
-  return {"status": "ok"}
+  try:
+    with get_db_session() as session:
+        session.execute(text("SELECT 1"))
+        return {"database": "ok"}
+  except:
+    return {"database": "down"}
 
 @app.get("/")
 async def root():

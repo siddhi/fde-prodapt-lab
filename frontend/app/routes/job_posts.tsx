@@ -10,8 +10,8 @@ export default function JobPosts({loaderData}) {
       {loaderData.jobPosts.map(
         (jobPost) => 
           <div>
-            <h2 key={jobPost.id}>{jobPost.title}</h2>
-            <p>{jobPost.description}</p>
+            <h2 key={jobPost.id} className="text-3xl font-bold">{jobPost.title}</h2>
+            <p className="mt-2">{jobPost.description}</p>
           </div>
       )}
     </div>

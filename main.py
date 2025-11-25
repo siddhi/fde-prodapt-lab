@@ -1,5 +1,5 @@
 import os
-from typing import Annotated
+from typing import Annotated, Optional
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -61,10 +61,37 @@ if not settings.PRODUCTION:
    app.mount("/uploads", StaticFiles(directory="uploads"))
 
 @app.get("/api/job-boards/{job_board_id}/job-posts")
-async def api_company_job_board(job_board_id):
+async def api_company_job_board_posts(job_board_id):
   with get_db_session() as session:
      jobPosts = session.query(JobPost).filter(JobPost.job_board_id.__eq__(job_board_id)).all()
      return jobPosts
+
+@app.get("/api/job-boards/{job_board_id}")
+async def api_get_company_job_board(job_board_id):
+  with get_db_session() as session:
+     jobBoard = session.get(JobBoard, job_board_id)
+     if not jobBoard:
+        raise HTTPException(status_code=404)
+     return jobBoard
+  
+class JobBoardEditForm(BaseModel):
+   slug : str = Field(..., min_length=3, max_length=20)
+   logo: Optional[UploadFile] = None
+
+@app.put("/api/job-boards/{job_board_id}")
+async def api_get_company_job_board(job_board_id, job_board_edit_form: Annotated[JobBoardEditForm, Form()]):
+  with get_db_session() as session:
+     jobBoard = session.get(JobBoard, job_board_id)
+     if not jobBoard:
+        raise HTTPException(status_code=404)
+     jobBoard.slug = job_board_edit_form.slug
+     if job_board_edit_form.logo is not None:
+        logo_contents = await job_board_edit_form.logo.read()
+        file_url = upload_file("company-logos", job_board_edit_form.logo.filename, logo_contents, job_board_edit_form.logo.content_type)
+        jobBoard.logo_url = file_url
+     session.add(jobBoard)
+     session.commit()
+     return jobBoard
 
 @app.post("/api/job-posts/{job_post_id}/close")
 async def api_close_job_post(job_post_id):

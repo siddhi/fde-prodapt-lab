@@ -1,4 +1,4 @@
-import { Form, Link, redirect, useFetcher } from "react-router";
+import { Form, Link, redirect } from "react-router";
 import type { Route } from "../+types/root";
 import { Field, FieldGroup, FieldLabel, FieldLegend } from "~/components/ui/field";
 import { Input } from "~/components/ui/input";

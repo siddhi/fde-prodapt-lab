@@ -22,6 +22,7 @@ export default function JobBoards({loaderData}) {
           <TableRow>
             <TableHead>Logo</TableHead>
             <TableHead>Slug</TableHead>
+            <TableHead></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -34,6 +35,7 @@ export default function JobBoards({loaderData}) {
                   : <></>}
                 </TableCell>
                 <TableCell><Link to={`/job-boards/${jobBoard.id}/job-posts`} className="capitalize">{jobBoard.slug}</Link></TableCell>
+                <TableCell><Link to={`/job-boards/${jobBoard.id}/edit`}>Edit</Link></TableCell>
               </TableRow>
           )}
         </TableBody>

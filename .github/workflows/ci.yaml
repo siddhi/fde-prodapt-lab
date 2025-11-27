@@ -11,11 +11,6 @@
     jobs:
       test:
         runs-on: ubuntu-latest
-        services:
-          # Testcontainers will manage its own containers, so a dedicated 'services' block is often not strictly needed
-          # unless you want to pre-configure a Docker service for other reasons.
-          # However, Docker must be available on the runner.
-
         steps:
         - name: Checkout code
           uses: actions/checkout@v4

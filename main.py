@@ -39,6 +39,12 @@ async def api_job_boards():
     with get_db_session() as session:
        jobBoards = session.query(JobBoard).all()
        return jobBoards
+
+@app.get("/api/job-application-ai-evaluations")
+async def api_job_boards():
+    with get_db_session() as session:
+       results = session.query(JobApplicationAIEvaluation).all()
+       return results
     
 class JobBoardForm(BaseModel):
    slug : str = Field(..., min_length=2, max_length=20)

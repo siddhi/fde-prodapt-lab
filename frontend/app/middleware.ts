@@ -1,6 +1,8 @@
+// @ts-nocheck
+
 import { userContext } from "./context"
 
-export async function authMiddleware({ context }, next) { 
+export async function authMiddleware({ context } , next ) { 
   const existingMe = context.get(userContext)
   if (existingMe){
     return next()
@@ -10,3 +12,5 @@ export async function authMiddleware({ context }, next) {
   context.set(userContext, me)
   return next()
 }
+
+

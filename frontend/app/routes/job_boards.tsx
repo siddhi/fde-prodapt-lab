@@ -1,11 +1,11 @@
-import { Link, useFetcher } from "react-router";
+import { Link, useFetcher, type ClientLoaderFunctionArgs } from "react-router";
 import { Avatar, AvatarImage } from "~/components/ui/avatar";
 import { Button } from "~/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
 import type { Route } from "../+types/root";
 import {userContext} from "../context"
 
-export async function clientLoader({context}) {
+export async function clientLoader({context} : ClientLoaderFunctionArgs) {
   const me = context.get(userContext)
   const isAdmin = me && me.is_admin
   const res = await fetch(`/api/job-boards`);

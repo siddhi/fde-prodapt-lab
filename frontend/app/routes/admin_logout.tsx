@@ -12,3 +12,4 @@ export async function clientLoader({context}  : ClientLoaderFunctionArgs) {
 export default function Logout() {
   return <></>
 }
+

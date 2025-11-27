@@ -14,6 +14,9 @@ def authenticate_admin(username, password):
     else:
         return None
     
+def delete_admin_session(token):
+    del admin_sessions[token]
+    
 from starlette.middleware.base import BaseHTTPMiddleware
 class AdminSessionMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, handler):

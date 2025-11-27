@@ -1,6 +1,7 @@
 import { Outlet } from "react-router"
 import appStylesHref from "./app.css?url"
 import { authMiddleware } from "./middleware";
+import type { Route } from "./+types/root";
 
 export const clientMiddleware: Route.ClientMiddlewareFunction[] = [authMiddleware];
 

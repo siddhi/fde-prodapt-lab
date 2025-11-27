@@ -5,7 +5,7 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, EmailStr, Field
 from sqlalchemy import text
-from auth import AdminAuthzMiddleware, AdminSessionMiddleware, authenticate_admin
+from auth import AdminAuthzMiddleware, AdminSessionMiddleware, authenticate_admin, delete_admin_session
 from db import get_db_session
 from file_storage import upload_file
 from models import JobApplication, JobBoard, JobPost
@@ -187,7 +187,8 @@ async def admin_login(response: Response, admin_login_form: Annotated[AdminLogin
       raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
    
 @app.post("/api/admin-logout")
-async def admin_login(response: Response):
+async def admin_login(request: Request, response: Response):
+   delete_admin_session(request.cookies.get("admin_session"))
    secure = settings.PRODUCTION
    response.delete_cookie(key="admin_session", 
                         httponly=True, secure=secure, 

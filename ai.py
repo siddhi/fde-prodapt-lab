@@ -37,7 +37,9 @@ def build_system_and_user_messages(resume_text: str, job_desc: str):
         {"role": "user", "content": prompt}
     ]
 
-def evaluate_resume_with_ai(resume_text: str, job_desc: str, model="gpt-4o-mini", temperature=0):
+def evaluate_resume_with_ai(resume_text: str, 
+                            job_desc: str, 
+                            model="gpt-4o-mini", temperature=0):
     messages = build_system_and_user_messages(resume_text, job_desc)
     resp = client.chat.completions.create(
         model=model,

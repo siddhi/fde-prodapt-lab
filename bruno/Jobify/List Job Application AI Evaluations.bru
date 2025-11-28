@@ -1,0 +1,16 @@
+meta {
+  name: List Job Application AI Evaluations
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{BASE_URL}}/api/job-boards/1/job-posts
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

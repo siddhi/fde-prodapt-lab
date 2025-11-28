@@ -8,3 +8,4 @@ def extract_text_from_pdf_bytes(pdf_bytes: bytes) -> str:
         text = p.extract_text() or ""
         pages.append(text)
     return "\n\n".join(pages).strip()
+

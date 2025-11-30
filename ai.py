@@ -1,7 +1,7 @@
 import json
 from openai import OpenAI
 from pydantic import BaseModel
-from typing import List
+from typing import List, Literal
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import PydanticOutputParser
@@ -55,8 +55,8 @@ def evaluate_resume_with_ai(resume_text: str,
     return json.loads(resp.choices[0].message.content.strip())
 
 class ReviewedApplication(BaseModel):
-   revised_description: str
-   overall_summary: str
+    revised_description: str
+    overall_summary: str
 
 class JDAnalysis(BaseModel):
     unclear_sections: List[str]
@@ -113,16 +113,109 @@ Analyze the following job description:
 Return only JSON.
 """
 
+class RewrittenSection(BaseModel):
+    category: Literal["clarity", "jargon", "bias", "missing_information"]
+    original_text: str
+    issue_explanation: str
+    improved_text: str
+
+class JDRewriteOutput(BaseModel):
+    rewritten_sections: List[RewrittenSection]
+
+REWRITE_SYSTEM_PROMPT = """
+You are an expert HR editor specializing in rewriting job descriptions for clarity, inclusivity,
+and accessibility.
+
+You will receive:
+1. The original job description.
+2. A structured analysis of issues found in Step 1.
+
+Your task is to rewrite ONLY the problematic sections, not the entire job description.
+
+For each identified issue:
+- Include the original problematic text (quoted exactly)
+- Include the category (clarity, jargon, bias, or missing_information)
+- Provide an improved, inclusive alternative that preserves meaning
+- Maintain neutral, professional tone
+- Ensure suggestions follow inclusive hiring practices
+
+Return ONLY valid JSON matching the provided schema. Do not write any prose outside JSON.
+"""
+
+REWRITE_USER_PROMPT = """
+Original Job Description:
+-------------------------
+{job_description}
+
+Analysis Findings:
+------------------
+{analysis_json}
+
+Rewrite ONLY the problematic sections using the schema.
+Return only JSON.
+"""
+
+FINALISE_SYSTEM_PROMPT = """
+You are an expert HR writer specializing in creating clear, concise, and inclusive job descriptions.
+
+Your job is to produce the final polished version of the job description.
+
+You will receive:
+1. The original job description.
+2. A list of rewritten sections (from Step 2).
+
+Your tasks:
+- Incorporate all improved rewritten sections into the original job description.
+- Remove or replace the problematic text that was flagged in earlier steps.
+- Maintain the original intent, structure, and role scope.
+- Ensure clarity, inclusivity, and accessibility.
+- Make tone consistent: professional, warm, and concise.
+- Improve flow and readability where necessary.
+- Do NOT invent new responsibilities, requirements, or benefits.
+
+Return ONLY the final polished job description as plain text. Do not include JSON.
+"""
+
+FINALISE_USER_PROMPT = """
+Original Job Description:
+-------------------------
+{job_description}
+
+Rewritten Sections:
+-------------------
+{rewritten_sections_json}
+
+Create the final polished job description by integrating the improvements.
+Return only the final text.
+"""
+
 def review_application(job_description: str) -> ReviewedApplication:
+    llm = ChatOpenAI(model="gpt-5.1", temperature=0, api_key=settings.OPENAI_API_KEY)
+
     analysis_parser = PydanticOutputParser(pydantic_object=JDAnalysis)
     analysis_prompt = ChatPromptTemplate.from_messages([
         ("system", ANALYSIS_SYSTEM_PROMPT),
         ("human", ANALYSIS_USER_PROMPT + "\n\n{format_instructions}"),
     ]).partial(format_instructions=analysis_parser.get_format_instructions())
-    llm = ChatOpenAI(model="gpt-5.1", temperature=0, api_key=settings.OPENAI_API_KEY)
-
     analysis_chain = analysis_prompt | llm | analysis_parser
     analysis = analysis_chain.invoke({"job_description": job_description})
-    revised_description = job_description
+
+    rewrite_parser = PydanticOutputParser(pydantic_object=JDRewriteOutput)
+    rewrite_prompt = ChatPromptTemplate.from_messages([
+        ("system", REWRITE_SYSTEM_PROMPT),
+        ("human", REWRITE_USER_PROMPT + "\n\n{format_instructions}"),
+    ]).partial(format_instructions=rewrite_parser.get_format_instructions())
+    rewrite_chain = rewrite_prompt | llm | rewrite_parser
+    rewrite = rewrite_chain.invoke({"job_description": job_description, "analysis_json": analysis.json()})
+
+    finalise_prompt = ChatPromptTemplate.from_messages([
+        ("system", FINALISE_SYSTEM_PROMPT),
+        ("human", FINALISE_USER_PROMPT),
+    ])
+    finalise_chain = finalise_prompt | llm
+    final_output = finalise_chain.invoke({
+        "job_description": job_description, 
+        "rewritten_sections_json": rewrite.json()})
+    revised_description = final_output.text
     overall_summary = analysis.overall_summary
     return ReviewedApplication(revised_description=revised_description, overall_summary=overall_summary)

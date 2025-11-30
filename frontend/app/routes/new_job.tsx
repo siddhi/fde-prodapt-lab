@@ -3,7 +3,7 @@ import type { Route } from "../+types/root";
 import { Field, FieldGroup, FieldLabel, FieldLegend } from "~/components/ui/field";
 import { Input, TextArea } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 export async function clientLoader({params}) {
   const jobBoardId = params.jobBoardId
@@ -34,10 +34,18 @@ export default function NewJobBoardForm({
   actionData,
   ...props
 }) {
+  const textboxRef = useRef(null)
   const [reviewed, setReviewed] = useState("false")
   const [summary, setSummary] = useState("")
+  const [revisedDescription, setRevisedDescription] = useState("")
+
+  const fix_job_description = () => {
+      textboxRef.current.value = revisedDescription
+  }
+
   if (actionData && reviewed === "false") {
     setSummary(actionData.overall_summary);
+    setRevisedDescription(actionData.revised_description)
     setReviewed("true")
   }
   return (
@@ -65,18 +73,23 @@ export default function NewJobBoardForm({
             <TextArea
               id="description"
               name="description"
+              ref={textboxRef}
               required
             />
           </Field>
-          <div>
-            {summary}
-          </div>
+          {reviewed === "true" ? (
+            <div>
+            <p>{summary}</p>
+            <Button type="button" onClick={fix_job_description}>Fix</Button>
+            </div>
+          ) : <div></div>}
+          
           <div className="float-right">
             <Field orientation="horizontal">
               {reviewed === "false" ? <Button type="submit">Review</Button>: <Button type="submit">Submit</Button>}
               <Button variant="outline" type="button">
-                    <Link to={`/job-boards/${loaderData.jobBoardId}/job-posts`}>Cancel</Link>
-                  </Button>
+                <Link to={`/job-boards/${loaderData.jobBoardId}/job-posts`}>Cancel</Link>
+              </Button>
             </Field>
           </div>
         </FieldGroup>

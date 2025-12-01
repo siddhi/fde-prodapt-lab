@@ -1,8 +1,9 @@
 import { Form, Link, redirect } from "react-router";
 import type { Route } from "../+types/root";
 import { Field, FieldGroup, FieldLabel, FieldLegend } from "~/components/ui/field";
-import { Input, TextArea } from "~/components/ui/input";
+import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
+import { Textarea } from "~/components/ui/textarea";
 import { useState, useRef } from "react";
 
 export async function clientLoader({params}) {
@@ -70,7 +71,7 @@ export default function NewJobBoardForm({
             <FieldLabel htmlFor="description">
               Description
             </FieldLabel>
-            <TextArea
+            <Textarea
               id="description"
               name="description"
               ref={textboxRef}

@@ -10,6 +10,8 @@ class Settings(BaseSettings):
     ADMIN_PASSWORD: str
     RESEND_API_KEY: str
     OPENAI_API_KEY: str
+    QDRANT_API_KEY: str
+    QDRANT_URL: AnyUrl
     IS_CI: bool = False
 
     class Config:

@@ -2,9 +2,13 @@ import json
 from openai import OpenAI
 from pydantic import BaseModel
 from typing import List, Literal
-from langchain_openai import ChatOpenAI
+from langchain_core.documents import Document
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import PydanticOutputParser
+from langchain_qdrant import QdrantVectorStore
+from qdrant_client import QdrantClient
+from qdrant_client.http.models import Distance, VectorParams
 
 from config import settings
 
@@ -223,3 +227,27 @@ def review_application(job_description: str) -> ReviewedApplication:
     revised_description = final_output.text
     overall_summary = analysis.overall_summary
     return ReviewedApplication(revised_description=revised_description, overall_summary=overall_summary)
+
+def get_vector_store():
+    embeddings = OpenAIEmbeddings(model="text-embedding-3-large", api_key=settings.OPENAI_API_KEY)
+    vector_store = QdrantVectorStore.from_existing_collection(embedding=embeddings, collection_name="resumes", path="qdrant_store")
+    return vector_store
+
+def inmemory_vector_store():
+    embeddings = OpenAIEmbeddings(model="text-embedding-3-large", api_key=settings.OPENAI_API_KEY)
+    client = QdrantClient(":memory:")
+    client.create_collection(collection_name="resumes", vectors_config=VectorParams(size=3072, distance=Distance.COSINE))
+    vector_store = QdrantVectorStore(client=client, collection_name="resumes", embedding=embeddings)
+    try:
+        yield vector_store
+    finally:
+        client.close()
+
+def ingest_resume(resume_text, resume_url, resume_id, vector_store):
+    doc = Document(page_content=resume_text, metadata={"url": resume_url})
+    vector_store.add_documents(documents=[doc], ids=[resume_id])
+
+def get_recommendation(job_description, vector_store):
+    retriever = vector_store.as_retriever(search_kwargs={"k": 1})
+    results = retriever.invoke(job_description)
+    return results[0]

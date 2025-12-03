@@ -5,7 +5,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from testcontainers.postgres import PostgresContainer
 from fastapi.testclient import TestClient
-from main import app, get_db
+from main import app, get_db, get_vector_store
+from ai import inmemory_vector_store
 
 @pytest.fixture(scope="session")
 def postgres_container():
@@ -35,11 +36,19 @@ def db_session(db_engine):
         connection.close()
 
 @pytest.fixture(scope="function")
-def client(db_session):
+def vector_store():
+    yield from inmemory_vector_store()
+
+@pytest.fixture(scope="function")
+def client(db_session, vector_store):
     def override_get_db():
         yield db_session
+
+    def override_vector_store():
+        yield vector_store
     
     app.dependency_overrides[get_db] = override_get_db
+    app.dependency_overrides[get_vector_store] = override_vector_store
     
     try:
         with TestClient(app) as test_client:

@@ -6,7 +6,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, EmailStr, Field
 from typing import List
 from sqlalchemy import text
-from ai import evaluate_resume_with_ai, review_application
+from ai import evaluate_resume_with_ai, review_application, ingest_resume, get_vector_store
 from auth import AdminAuthzMiddleware, AdminSessionMiddleware, authenticate_admin, delete_admin_session
 from converter import extract_text_from_pdf_bytes
 from db import get_db
@@ -156,8 +156,16 @@ def evaluate_resume(resume_content, job_post_description, job_application_id, db
    db.add(evaluation)
    db.commit()
 
+def ingest_resume_for_recommendataions(resume_content, resume_url, resume_id, vector_store):
+   resume_raw_text = extract_text_from_pdf_bytes(resume_content)
+   ingest_resume(resume_raw_text, resume_url, resume_id, vector_store)
+
 @app.post("/api/job-applications")
-async def api_create_new_job_application(job_application_form: Annotated[JobApplicationForm, Form()], background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
+async def api_create_new_job_application(
+   job_application_form: Annotated[JobApplicationForm, Form()], 
+   background_tasks: BackgroundTasks, 
+   db: Session = Depends(get_db),
+   vector_store = Depends(get_vector_store)):
 
    jobPost = db.get(JobPost, job_application_form.job_post_id)
    if not jobPost or not jobPost.is_open:
@@ -180,6 +188,9 @@ async def api_create_new_job_application(job_application_form: Annotated[JobAppl
    
    background_tasks.add_task(evaluate_resume, resume_content, 
                               jobPost.description, new_job_application.id, db)
+   
+   background_tasks.add_task(ingest_resume_for_recommendataions, resume_content, 
+                              file_url, new_job_application.id, vector_store)
    
    return new_job_application
 

@@ -1,6 +1,6 @@
 import os
 import time
-from ai import ingest_resume
+from ai import get_recommendation, ingest_resume
 from main import ingest_resume_for_recommendataions
 from models import JobBoard, JobPost
 
@@ -65,16 +65,40 @@ def test_job_application_api(db_session, vector_store, client):
     assert "Andrew" in result[0].page_content
     assert result[0].metadata["_id"] == job_post.id
 
-"""
-text = "hello world"
-url = "helloworld.pdf"
-doc = Document(page_content=text, metadata={"file_url": url})
-embeddings = OpenAIEmbeddings(model="text-embedding-3-small", api_key=settings.OPENAI_API_KEY)
+def test_retrieval(vector_store):
+    for id, filename in enumerate(os.listdir("test/resumes")):
+        with open(f"test/resumes/{filename}", "rb") as f:
+            content = f.read()
+        ingest_resume_for_recommendataions(content, filename, resume_id=id, vector_store=vector_store)
+    result = get_recommendation("I am looking for an expert in AI", vector_store)
+    assert "Andrew" in result.page_content
 
-doc_store = QdrantVectorStore.from_documents(
-    [doc], embeddings, location=":memory:", collection_name="testing"
-)
-retriever = doc_store.as_retriever(search_kwargs={"k": 1})
-result = retriever.invoke("hello")
-print(result)
-"""
+def test_recommendation_api(db_session, client):
+    job_board = JobBoard(slug="test", logo_url="http://example.com")
+    db_session.add(job_board)
+    db_session.commit()
+    db_session.refresh(job_board)
+    job_post = JobPost(title="AI Engineer", 
+                       description="I am looking for a generalist who can work in python and typescript", 
+                       job_board_id = job_board.id)
+    db_session.add(job_post)
+    db_session.commit()
+    db_session.refresh(job_post)
+    test_resumes = [
+        ('Andrew', 'Ng', 'andrewng@gmail.com', 'ProfileAndrewNg.pdf'),
+        ('Koudai', 'Aono', 'koxudaxi@gmail.com', 'ProfileKoudaiAono.pdf')
+    ]
+    for first_name, last_name, email, filename in test_resumes:
+        post_data = {
+            "first_name": first_name,
+            "last_name": last_name,
+            "email": email,
+            "job_post_id": job_post.id
+        }
+        with open(f"test/resumes/{filename}", "rb") as f:
+            response = client.post("/api/job-applications", data=post_data, files={"resume": (filename, f, "application/pdf")})
+    response = client.get(f"/api/job-posts/{job_post.id}/recommend")
+    assert response.status_code == 200
+    data = response.json()
+    assert data['first_name'] == 'Koudai'
+    assert data['last_name'] == 'Aono'

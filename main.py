@@ -111,21 +111,6 @@ async def api_close_job_post(job_post_id, db: Session = Depends(get_db)):
    db.commit()
    return jobPost
 
-@app.get("/api/job-posts/{job_post_id}/recommend")
-async def api_recommend_resume(
-   job_post_id, 
-   db: Session = Depends(get_db),
-   vector_store = Depends(get_vector_store)):
-   
-   job_post = db.get(JobPost, job_post_id)
-   if not job_post:
-      raise HTTPException(status_code=400)
-   job_description = job_post.description
-   recommended_resume = get_recommendation(job_description, vector_store)   
-   application_id = recommended_resume.metadata["_id"]
-   job_application = db.get(JobApplication, application_id)
-   return job_application
-
 class JobPostForm(BaseModel):
    title : str
    description: str

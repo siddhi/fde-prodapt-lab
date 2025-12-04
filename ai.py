@@ -230,7 +230,17 @@ def review_application(job_description: str) -> ReviewedApplication:
 
 def get_vector_store():
     embeddings = OpenAIEmbeddings(model="text-embedding-3-large", api_key=settings.OPENAI_API_KEY)
-    vector_store = QdrantVectorStore.from_existing_collection(embedding=embeddings, collection_name="resumes", path="qdrant_store")
+    if settings.PRODUCTION:
+        vector_store = QdrantVectorStore.from_existing_collection(
+            embedding=embeddings, 
+            collection_name="resumes", 
+            url=str(settings.QDRANT_URL), 
+            api_key=settings.QDRANT_API_KEY)
+    else:
+        vector_store = QdrantVectorStore.from_existing_collection(
+            embedding=embeddings, 
+            collection_name="resumes", 
+            path="qdrant_store")
     return vector_store
 
 def inmemory_vector_store():

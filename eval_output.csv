@@ -1,0 +1,335 @@
+,Job Description,Summary,Fixed Description
+0,We’re seeking a Forward Deployed Engineer. We want someone with 3+ years of software engineering experience with production systems. They should be rockstar programmers and problem solvers. They should have experience in a customer-facing technical role with a background in systems integration or professional services,"The description is very short and lacks key details about responsibilities, structure, and conditions of the role, which can make it hard for candidates to assess fit. It also uses a gender-coded term (""rockstar"") and niche jargon (""Forward Deployed Engineer"") that may discourage or confuse otherwise qualified applicants. Adding concrete, inclusive, and transparent information about the role, expectations, and compensation would significantly improve clarity and accessibility.","We’re seeking a Customer-Facing Software Implementation Engineer (Forward Deployed Engineer) who works closely with clients to design, build, and deploy software solutions in their live environments.
+
+We want someone with 3+ years of software engineering experience working with live, customer-facing production systems. They should demonstrate strong programming skills and effective, structured problem-solving abilities. They should have experience in a customer-facing technical role, such as leading implementation projects, integrating software with customer systems via APIs or other interfaces, and providing on-site or remote technical guidance throughout deployment and post-deployment support.
+
+Team and Reporting:  
+This position reports to the [Engineering Manager / Director] for the Forward Deployed Engineering team and works closely with product, core engineering, and customer success teams to deliver successful customer implementations.
+
+Location and Work Arrangement:  
+This role is based in [city/region] with a [remote/hybrid/onsite] work arrangement. Occasional travel to customer sites (approximately [X–Y%] of the time) may be required, with advanced notice and support for travel expenses.
+
+Working Hours and Flexibility:  
+This role is full-time with core collaboration hours aligned to [time zone]. We offer flexibility in scheduling within those hours. Limited after-hours or on-call work may be required for critical customer deployments or incident response, with appropriate compensation or time off in lieu.
+
+Required Qualifications:
+- 3+ years of software engineering experience working with live, customer-facing production systems  
+- Experience in a customer-facing technical role (e.g., implementation, technical consulting, or solutions engineering)  
+- Proficiency in at least one modern programming language (e.g., Python, Java, JavaScript, or similar)
+
+Preferred Qualifications:
+- Experience integrating software products with customer systems via APIs, SDKs, or middleware  
+- Background in systems integration, professional services, or technical consulting  
+- Experience working directly with enterprise or mid-market customers on technical projects
+
+Compensation and Benefits:  
+This role offers a salary range of [$X–$Y], depending on experience and location, along with equity eligibility and a comprehensive benefits package (including health, dental, vision, retirement plan, and paid time off).
+
+Growth and Development:  
+In this role, you will have opportunities to deepen your technical expertise, mentor newer team members, and grow into roles such as Senior Forward Deployed Engineer, Solutions Architect, or Technical Lead. We support ongoing learning through mentorship, training, and access to professional development resources.
+
+Application Process:  
+To apply, please submit your resume and a brief cover letter outlining your relevant experience and interest in this role. Our typical process includes an initial recruiter conversation, a technical interview, and a final round focusing on collaboration and problem-solving. We aim to respond to all applicants within [X] business days."
+1,"excellent opportunity for React JS
+
+Job Location: Chennai (Only)
+
+Experience required : 6-10 yrs
+
+Skills: React JS","The job description is extremely minimal, offering only location, experience range, and a single skill, which makes it difficult for candidates to understand the role or assess fit. The main concerns are lack of clarity about responsibilities, title, qualifications, compensation, and work conditions; there is no evident biased language, but the absence of detail may deter qualified and diverse applicants.","Job Title: Senior React.js Developer  
+
+About the Company:  
+- We are a technology-focused organization committed to building reliable, user-centric digital products  
+- Our culture emphasizes collaboration, continuous learning, and respect for diverse perspectives  
+
+Position: Senior React.js Developer  
+
+We are seeking an experienced React.js developer to design, build, and maintain user-facing web applications, collaborating closely with product managers, designers, and backend engineers.  
+
+Job Location: Chennai  
+Work Arrangement: Primarily onsite at our Chennai office, with potential for limited hybrid or flexible arrangements in line with company policy.  
+
+Experience Required: 6–10 years  
+
+Employment Type: Full-time, permanent position  
+
+Reporting and Team:  
+- Reports to: Engineering Manager / Head of Engineering  
+- You will be part of a cross-functional product team that includes engineers, designers, and product managers.  
+
+Key Responsibilities:  
+- Develop, enhance, and maintain responsive web applications using React.js  
+- Translate UI/UX designs and wireframes into high-quality, accessible user interfaces  
+- Collaborate with product, design, and backend teams to define and implement product features  
+- Optimize components for maximum performance across a wide range of devices and browsers  
+- Participate in code reviews, provide constructive feedback, and help maintain code quality standards  
+- Troubleshoot and resolve technical issues across the frontend stack  
+- Contribute to technical design discussions and propose improvements to architecture and processes  
+
+Required Skills and Experience:  
+- 6–10 years of professional experience in front-end development, with a strong focus on React.js  
+- Proficiency in modern JavaScript (ES6+) and HTML5/CSS3  
+- Experience integrating frontend applications with RESTful APIs  
+- Familiarity with state management libraries (e.g., Redux, Context API) and React hooks  
+- Experience with version control tools (e.g., Git)  
+- Ability to write clean, maintainable, and well-documented code  
+- Strong problem-solving skills and the ability to collaborate effectively with cross-functional teams  
+
+Preferred (Nice-to-Have):  
+- Experience with TypeScript  
+- Experience with testing frameworks (e.g., Jest, React Testing Library)  
+- Exposure to build tools and bundlers (e.g., Webpack, Vite)  
+
+Qualifications:  
+- Requirements: As listed under “Required Skills and Experience”  
+- Preferred: As listed under “Preferred (Nice-to-Have)”; these are not mandatory and candidates who meet the requirements are encouraged to apply even if they do not meet all preferred criteria.  
+
+Education:  
+- Bachelor’s degree in Computer Science, Engineering, or a related field, or equivalent practical experience  
+
+Working Hours:  
+- Standard working hours, Monday to Friday, aligned with India business hours  
+- Occasional flexibility may be required for project deadlines, with prior notice wherever possible  
+
+Compensation:  
+- Competitive salary based on experience, within a predefined range for this role  
+- Performance-based incentives may be available, aligned with company policy  
+
+Benefits:  
+- Health insurance coverage as per company policy  
+- Paid time off, including annual leave and sick leave  
+- Provident fund and statutory benefits as applicable  
+- Learning and development support (e.g., courses, certifications) subject to company guidelines  
+
+Growth and Development:  
+- Opportunities to mentor junior developers and contribute to technical decision-making  
+- Access to learning resources, internal knowledge-sharing sessions, and potential leadership responsibilities based on performance  
+
+How to Apply:  
+- Please submit your resume and a brief cover note highlighting your relevant React.js experience  
+- Include links to any relevant portfolios or public repositories (e.g., GitHub), if available  
+- Shortlisted candidates will be contacted with details about the interview process and expected timelines"
+2,"Location: Remote
+
+Role Overview:
+
+As an International Coding Educator, you will deliver engaging online coding classes to students aged 5–18. Your teaching will cover both block-based and text-based programming, enabling students to build apps, websites, games, software, AI projects, and robotics solutions.
+
+You will adapt your teaching style to match the learning patterns of different age groups, ensuring a fun, inspiring, and outcome-driven learning experience.
+
+This role demands not only technical expertise but also a WOW factor in teaching – the ability to transform learning into a journey of curiosity, creativity, and innovation.","The description is engaging and clearly positions the role as an online coding educator for children and teens, but it relies on subjective wording like ""WOW factor"" and broad scope statements that could confuse candidates. Key structural elements are missing, including qualifications, compensation, employment type, and application details, which makes it hard for applicants to assess fit and could impact equity and inclusiveness.","Location: Remote (teaching hours aligned primarily with [specify primary time zone, e.g., GMT/EST]; some evening or weekend classes may be required based on student demand).
+
+Employment Type: [Full-time/Part-time/Contract] remote position, with an expected teaching load of approximately [X–Y] hours per week, plus preparation time.
+
+Compensation: Competitive hourly rate or salary, commensurate with experience and qualifications, within a typical range of [insert range] plus [any applicable benefits or incentives].
+
+Reporting Structure: This role reports to the [Head of Curriculum/Academic Director] and collaborates closely with the broader teaching and curriculum teams.
+
+Role Overview:
+
+As an International Coding Educator, you will deliver engaging online coding classes to students aged 5–18 in an inclusive, culturally responsive learning environment that welcomes and supports learners from diverse backgrounds. Your teaching will cover both block-based and text-based programming, with a primary focus on introductory app and game development, and optional modules in web development, AI fundamentals, and beginner robotics, depending on curriculum needs.
+
+You will adapt your teaching style—such as pacing, examples, level of abstraction, and interactivity—to suit different age groups (early learners, pre-teens, and teens), ensuring an engaging, supportive, and outcome-focused learning experience.
+
+In addition to live instruction, you may be responsible for preparing lesson materials, providing basic feedback on student work, recording learner progress, and, when required, communicating brief updates to parents or caregivers.
+
+This role requires not only strong technical expertise but also the ability to engage and motivate learners through interactive, creative teaching methods that foster curiosity, creativity, and innovation.
+
+Tools and Technologies:
+
+Classes are typically delivered using platforms such as Scratch, MakeCode, and Python/JavaScript environments, along with video-conferencing tools (e.g., Zoom) and a learning management system (LMS) for sharing materials and tracking student progress.
+
+Required Qualifications:
+- Proficiency in teaching introductory coding concepts using both block-based (e.g., Scratch) and text-based programming languages (e.g., Python, JavaScript).
+- Experience teaching or tutoring children or teens in an online or classroom setting.
+- Strong spoken and written English communication skills.
+- Reliable internet connection and ability to teach from a quiet, professional environment.
+
+Preferred Qualifications:
+- Experience with additional languages or platforms (e.g., HTML/CSS, robotics kits, AI education tools).
+- Formal training or certification in education, computer science, or a related field.
+- Experience working with diverse student populations and using inclusive teaching practices.
+
+Training and Onboarding:
+
+We provide structured onboarding, including training on our curriculum, teaching platforms, and student engagement practices before you begin teaching independently.
+
+Professional Development:
+
+We offer ongoing opportunities for skill development, including access to training resources, peer observations, and potential pathways to expanded responsibilities such as curriculum development, mentor teaching, or team leadership.
+
+Application Process:
+
+To apply, please submit your CV/resume and a brief cover letter outlining your teaching and coding experience. Shortlisted candidates may be invited to deliver a short demo lesson. Applications will be reviewed on a rolling basis until the position is filled."
+3,"Key Responsibilities:
+
+Deliver high-quality, interactive online coding sessions to students globally.
+Teach both block-based coding (Scratch, Blockly, MIT App Inventor) and text-based programming (Python, JavaScript, C++, Java, etc.).
+Design curriculum-aligned projects in:
+App Development
+Web Development
+Game Development
+Software Development
+AI & Machine Learning
+Robotics
+Foster a student-centric learning environment that encourages problem-solving, creativity, and innovation.
+Adapt teaching methodologies based on age group (5–18 years) and student learning patterns.
+Incorporate storytelling, real-world examples, and project-based learning to inspire students.
+Track student progress, provide constructive feedback, and personalize learning paths.
+Collaborate with curriculum designers, academic mentors, and parents to ensure learning goals are met.
+Create a positive, engaging, and motivating learning experience with a WOW factor.","The job description outlines core teaching responsibilities and learning goals clearly at a high level but leaves many expectations and conditions undefined. Main concerns include ambiguous language around required technologies and domains, subjective phrases like ""WOW factor,"" and the absence of key information such as compensation, schedule, reporting structure, and qualification requirements. Clarifying these areas would make the role more transparent and accessible to a diverse pool of qualified candidates.","Key Responsibilities:
+
+- Deliver structured online coding sessions to students globally, typically in groups of [X–Y] learners, [number] times per week, using interactive tools and activities to meet defined learning outcomes (e.g., lesson completion and student satisfaction targets).
+
+- Teach both block-based coding (Scratch, Blockly, MIT App Inventor) and text-based programming, with required proficiency in at least two of the following: Python, JavaScript, C++, or Java; familiarity with additional languages is welcomed but not required.
+
+- Design projects in one or more of the following areas—App Development, Web Development, Game Development, Software Development, introductory AI & Machine Learning, and Robotics—that align with our internal curriculum guidelines and age-appropriate learning objectives.
+
+- Foster a student-centric learning environment that encourages problem-solving, creativity, and innovation.
+
+- Adapt lesson plans and teaching approaches for different age groups (5–18 years) and learning needs, for example by using play-based and visual activities for younger learners, more project-based and inquiry-led tasks for older learners, and differentiated support for varied learning paces.
+
+- Incorporate storytelling, real-world examples, and project-based learning to inspire students.
+
+- Track student progress using our learning management system, provide written and verbal feedback after each session or milestone, and adjust individual learning plans regularly in consultation with students and, where appropriate, their parents or guardians.
+
+- Collaborate with curriculum designers, academic mentors, and parents to ensure learning goals are met.
+
+- Create a positive, inclusive, and engaging learning environment that supports high student participation, curiosity, and confidence in learning to code, using varied, student-centered teaching strategies that are welcoming to diverse learning and communication styles."
+4,"Qualifications & Skills
+US Accent Certified – ability to communicate in a clear, neutral, and engaging US accent.
+5+ years of teaching experience in coding/programming to school or college students.
+Strong command of both block-based and text-based programming.
+Expertise in at least 3 of the following domains: App Development, Web Development, Game Development, Software Development, AI, Robotics.
+Familiarity with educational tools, coding platforms, and online teaching technologies (Zoom, Google Classroom, Scratch, Replit, etc.).
+Deep understanding of child & adolescent learning psychology.
+Excellent communication, storytelling, and engagement skills.
+Passionate about inspiring young minds and nurturing innovation.
+What we offer
+Opportunity to teach and inspire students across the globe.
+Flexible, remote-first work environment.
+Competitive compensation based on experience & expertise.
+Access to innovative curriculum, teaching resources, and training.
+Be part of a mission-driven edtech community that is shaping the future of education.
+Role Objective-To plan, deliver, and manage high-quality technical training programs aligned with project objectives, ensuring 100% completion of training and placement targets, maximizing student engagement and success, driving core domain placements, maintaining adherence to lesson plans, and contributing proactively to student retention, academic excellence, and continuous domain knowledge upgradation. Responsibilities
+Deliver training programs as per the project plan, ensuring 100% completion of planned student training modules.
+Monitor and reduce dropout ratio, taking proactive measures to retain students through engagement and intervention.
+Provide mentoring and academic support to students, assisting them with technical doubts and career guidance.
+Maintain batch average attendance as per organizational benchmarks, ensuring student participation and engagement.
+Regularly upgrade personal domain knowledge, staying current with industry trends, tools, and technologies.
+Contribute to student placement efforts: track nomination-to-interview ratios, support placement preparation, and liaise with placement
+Guide active students to complete their projects successfully, ensuring projects are industry-relevant and aligned with learning objectives.
+Maintain high trainer utilization, effectively planning and delivering sessions to optimize time and resources.
+Follow the training and upgrade plan, attending upskilling sessions, certifications, or internal workshops as required.
+Ability to train trainers, teachers on the above skills
+Ability to conduct TTT program online
+At least intermediate proficiency in using online meeting platforms like Google Meet, Microsoft Teams, WebEx, Skype etc. and different meeting features like breakout rooms, polls, questions, whiteboard offered by at least one of these platforms
+Should be comfortable driving day long online training sessions","The description conveys a mission-driven, remote teaching role with a strong focus on coding education and student placement outcomes, but it includes some unclear phrases, internal jargon, and a potentially exclusionary ""US Accent Certified"" requirement. Clarifying undefined terms and expectations, reducing potentially biased or unnecessarily rigid requirements, and adding key structural details like location parameters, compensation range, reporting lines, and application process would make the posting more inclusive and transparent for a diverse pool of candidates.","Qualifications & Skills  
+• Strong proficiency in spoken English, with clear and understandable communication that supports diverse learners.  
+• Typically 3–5+ years of experience teaching coding/programming to school or college students, or equivalent experience in a similar educational or training role.  
+• Strong command of both block-based and text-based programming.  
+• Expertise in at least 3 of the following domains: App Development, Web Development, Game Development, Software Development, AI, Robotics.  
+• Familiarity with educational tools, coding platforms, and online teaching technologies (e.g., Zoom, Google Classroom, Scratch, Replit).  
+• Solid working knowledge of child and adolescent learning principles and experience applying them in an educational setting.  
+• Excellent communication, storytelling, and engagement skills.  
+• Passionate about inspiring young minds and nurturing innovation.  
+• Ability to train trainers and teachers on the above skills.  
+• Ability to design and conduct online Train-the-Trainer (TTT) programs for teachers and trainers, building other educators’ skills in the above areas.  
+• At least intermediate proficiency in using online meeting platforms like Google Meet, Microsoft Teams, WebEx, Skype, etc., including features such as breakout rooms, polls, Q&A, and whiteboards (in at least one of these platforms).  
+• Comfortable leading day-long online training sessions.
+
+What we offer  
+• Employment type and schedule: [Full-time/Part-time/Contract] role with approximately [X] hours per week and potential sessions during [e.g., evenings/weekends, local or learner time zones].  
+• Reporting structure: This role reports to the [Job Title, e.g., Training Manager/Academic Head] and collaborates closely with other trainers, curriculum designers, and the student placement team.  
+• Opportunity to teach and inspire students across the globe.  
+• Flexible, remote-first work environment. This role is primarily remote, with work conducted online. Candidates should be able to reliably work from [insert eligible countries/regions] and be available to teach in [specify primary time zones and typical teaching hours]. Any occasional in-person meetings or events will be communicated in advance.  
+• Competitive compensation based on experience and expertise, with an expected salary or fee range of [insert range] and, where applicable, additional components such as performance incentives or benefits in line with local market practices.  
+• Access to innovative curriculum, teaching resources, and ongoing training and certification support.  
+• Clear growth pathways, including opportunities to progress into senior trainer, content lead, or academic coordination roles, with regular performance reviews and professional development planning.  
+• Be part of a mission-driven edtech community that is shaping the future of education.
+
+Role Objective  
+• Plan, deliver, and manage high-quality technical training programs that are aligned with course and program learning goals.  
+• Work toward full completion of planned training modules and strong student placement outcomes, in line with agreed project targets.  
+• Maximize student engagement, learning, and success, with a focus on driving placements in relevant technical domains.  
+• Follow and refine lesson plans to support student retention and academic excellence.  
+• Continuously update and strengthen your own domain knowledge to reflect current industry tools, technologies, and practices.
+
+Responsibilities  
+• Deliver training programs as per the project plan, ensuring completion of planned student training modules.  
+• Coordinate with fellow trainers and curriculum designers to ensure a consistent learner experience.  
+• Monitor and work to reduce student dropout rates, taking proactive measures to retain students through engagement and timely intervention.  
+• Provide mentoring and academic support to students, assisting them with technical doubts and career guidance.  
+• Maintain batch average attendance as per organizational benchmarks, ensuring strong student participation and engagement.  
+• Regularly upgrade personal domain knowledge, staying current with industry trends, tools, and technologies.  
+• Contribute to student placement efforts: track how many students you recommend for roles and how many of them are invited to interviews; support students with placement preparation (e.g., resumes, portfolios, mock interviews); and collaborate with the internal placement team and employer partners as needed.  
+• Guide active students to complete their projects successfully, ensuring projects are industry-relevant and aligned with learning objectives.  
+• Plan your schedule to ensure a strong focus on delivering training sessions and providing direct support to students, while using preparation and non-teaching time efficiently.  
+• Follow the training and upgrade plan, attending upskilling sessions, certifications, or internal workshops as required.  
+• Participate in regular team meetings, feedback sessions, and cross-functional projects to continuously improve training quality and learner outcomes.
+
+Application process  
+• To apply, please submit your resume/CV and a brief cover letter outlining your relevant teaching and technical experience to [application email/link].  
+• Optional: Share links to a short teaching demo video or sample lesson materials, if available.  
+• Our selection process typically includes: (1) application screening, (2) a virtual interview, (3) a short teaching demonstration or task, and (4) reference checks.  
+• We aim to respond to shortlisted candidates within [X] business days and to complete the overall process within approximately [Y] weeks."
+5,"Desired profile
+Master’s degree in a relevant field (e.g., Engineering, Computer Science, ), well experienced Technical Trainer in Java, Python
+At least 2-3 years of experience in conducting similar TTT programs for trainers. Exposure to corporate training will be an advantage
+Well experienced in conducting online training and using features of online meeting platforms
+Experience in student placements or working with placement teams is a plus.
+Certified on any TTT programme to serve as an advantage
+Education
+Bachelor's or master’s degree in computer science, AI, Data Science, or a related field with strong coding experience.
+Technical Skills
+Solid understanding of Transformer models, LLMs, fine-tuning, and RLHF.
+Strong coding ability in Python, familiarity with Jupyter, PyTorch, TensorFlow.
+Hands-on experience with LangChain, AutoGPT, Hugging Face Transformers, OpenAI API, etc.
+Familiarity with vector databases (Pinecone, FAISS, Weaviate) and RAG pipelines.
+Instructional Skills
+Proven experience in technical training, curriculum development, or mentorship.
+Excellent communication and presentation skills.
+Ability to simplify complex topics for diverse audiences.
+Nice-to-Have
+Certification in AI/ML (e.g., Google Cloud ML, Azure AI, DeepLearning.ai GenAI specialization).
+Experience with agent frameworks
+Awareness of AI ethics, alignment, and responsible deployment.
+Experience in deploying LLM-based applications to production environments.
+Location : Some one who can work from Hyderbad, chennai or Bangalore and willing to travel on need basis.","The job description targets a technically advanced AI/LLM trainer profile but is fragmented and mixes train-the-trainer, placement, and deep ML engineering expectations without clearly stating core responsibilities or must-have vs. nice-to-have criteria. Undefined acronyms, dense AI jargon, and vague phrases like ""similar TTT programs"" and ""on need basis"" may confuse or deter qualified applicants, and key details such as compensation, reporting structure, work arrangement specifics, and application process are missing. Clarifying requirements, defining terms, and adding structured information about the role and employment conditions would significantly improve clarity and inclusiveness.","Desired Profile  
+- Master’s degree in a relevant field (for example, Engineering, Computer Science, or a related discipline), or equivalent practical experience.  
+- Significant experience as a technical trainer, ideally with a background in Java and Python.  
+- Typically 2 or more years of experience designing and delivering Train-the-Trainer (TTT) or comparable technical enablement programs, or a strong portfolio demonstrating equivalent training impact.  
+- Experience delivering or designing technical training for corporate or professional learners is an advantage.  
+- Demonstrated experience conducting live online training sessions (for example, via Zoom, Microsoft Teams, or similar platforms), including use of interactive features such as breakout rooms, polls, and screen sharing.  
+- Experience supporting student or learner placements—such as coordinating with placement or career services teams, preparing learners for interviews, or aligning training outcomes with hiring needs—is a plus, but not a core requirement.  
+- Completion of a recognized Train-the-Trainer (TTT) certification program (for example, from reputable learning and development or technical training organizations) is preferred but not mandatory.  
+
+Education  
+- Bachelor’s or master’s degree in Computer Science, AI, Data Science, or a related field with strong coding experience, or equivalent practical experience.  
+
+Technical Skills  
+- Solid practical and conceptual understanding of Transformer-based architectures and Large Language Models (LLMs), including techniques such as model fine-tuning and reinforcement learning from human feedback (RLHF), sufficient to teach these topics to practitioners.  
+- Strong coding ability in Python, familiarity with Jupyter Notebooks (or similar interactive coding environments), PyTorch, and TensorFlow.  
+- Hands-on experience with at least some modern generative AI tooling such as frameworks and tools like LangChain and AutoGPT for building applications with LLMs, Hugging Face Transformers, or the OpenAI API (experience with comparable frameworks or APIs is also welcome).  
+- Working knowledge of retrieval-augmented generation (RAG) concepts and practical experience or the ability to quickly gain experience with vector databases (for example, Pinecone, FAISS, or Weaviate).  
+
+Instructional Skills  
+- Proven experience in at least one of the following areas: delivering technical training, designing technical curricula or learning materials, or mentoring learners or junior engineers.  
+- Excellent communication and presentation skills.  
+- Ability to simplify complex topics for diverse audiences.  
+
+Nice-to-Have  
+- Certification in AI/ML (for example, Google Cloud ML, Azure AI, DeepLearning.ai Generative AI specialization).  
+- Experience working with AI agent frameworks or orchestration tools (for example, frameworks for building multi-step or tool-using LLM agents such as AutoGen, LangGraph, or similar solutions) is a plus.  
+- Awareness of AI ethics, alignment, and responsible deployment.  
+- Experience in deploying LLM-based applications to production environments.  
+
+Location and Work Arrangement  
+- Location: Based in Hyderabad, Chennai, or Bengaluru, with the ability to work primarily from our office or in a hybrid arrangement as agreed.  
+- Work arrangement: Primarily office-based or hybrid from our locations in Hyderabad, Chennai, or Bengaluru, with flexibility for remote delivery of online training sessions as agreed with the manager.  
+- Willingness to travel occasionally for in-person training sessions or meetings (for example, a few days per month, depending on project needs).  
+
+Compensation and Inclusion  
+- Compensation: Competitive salary and benefits package commensurate with experience and location. Specific details on salary range, incentives, and benefits will be shared with shortlisted candidates and can be requested during the application process.  
+- Clearly required qualifications include the educational background (or equivalent experience), core technical skills (LLMs, Python, and key frameworks), and experience in technical training. Items listed under “Nice-to-Have” (such as specific AI/ML certifications or agent framework experience) are preferred but not mandatory, and candidates are encouraged to apply even if they do not meet every preferred criterion.  
+- We are an equal opportunity employer and welcome applicants from all backgrounds. We do not discriminate on the basis of race, religion, color, national origin, gender, gender identity or expression, sexual orientation, age, marital status, disability, or any other protected status, and we are committed to creating an inclusive environment for all employees."

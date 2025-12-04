@@ -16,6 +16,7 @@ pytest==9.0.1 # Testing Tool
 httpx==0.28.1 # HTTP Client
 openai==2.8.1 # LLM
 pypdf==6.4.0 # PDF to Text
+pandas==2.3.3 # For data analysis
 
 langchain==1.1.0 # Langchain framework
 langchain-openai==1.1.0 # Langchain Open AI interface

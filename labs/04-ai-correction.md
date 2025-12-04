@@ -135,7 +135,6 @@ Create the final polished job description by integrating the improvements.
 Return only the final text.
 """
 ```
-</details>
 
 ### What is the output format for the finalise chain?
 
@@ -158,8 +157,6 @@ rewrite_parser = PydanticOutputParser(pydantic_object=JDRewriteOutput)
     ]).partial(format_instructions=rewrite_parser.get_format_instructions())
     rewrite_chain = rewrite_prompt | llm | rewrite_parser
 ```
-</details>
-
 ### How do I invoke the rewrite chain? 
 
 <details>
@@ -198,7 +195,6 @@ Then fill in both fields and return
     overall_summary = analysis.overall_summary
     return ReviewedApplication(revised_description=revised_description, overall_summary=overall_summary)
 ```
-</details>
 
 ### How do I set the revised description into the state?
 
@@ -220,7 +216,6 @@ Then set the value along with the other variables
     setReviewed("true")
   }
 ```
-</details>
 
 ### How do I create the reference variable?
 
@@ -230,7 +225,6 @@ Then set the value along with the other variables
 ```python
 const textareaRef = useRef(null)
 ```
-</details>
 
 ### How do I attach the reference to the text area?
 
@@ -247,7 +241,6 @@ Set the `ref` prop on the node
   required
 />
 ```
-</details>
 
 ### Where do I add the "Fix for me" button?
 
@@ -284,4 +277,4 @@ Then configure the `onClick` prop on the button
 ```python
 <Button type="button" onClick={fix_job_description}>Fix for me</Button>
 ```
-</details>
+

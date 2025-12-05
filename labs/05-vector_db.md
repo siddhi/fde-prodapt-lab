@@ -310,3 +310,7 @@ def client(db_session, vector_store):
         app.dependency_overrides.clear()
 ```
 </details>
+
+## Discussion Questions
+
+1. How do we improve performance in vector database?

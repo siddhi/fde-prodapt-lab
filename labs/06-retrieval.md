@@ -116,3 +116,7 @@ async def api_recommend_resume(
    return job_application
 ```
 </details>
+
+## Discussion Questions
+
+1. How can we improve the quality of retrieval?

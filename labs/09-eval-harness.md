@@ -81,3 +81,7 @@ df["Fixed Description"] = revised_descriptions
 df.to_csv("eval_output.csv")
 ```
 </details>
+
+## Question
+
+1. When should we automate the eval cycle?

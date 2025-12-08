@@ -6,6 +6,7 @@ from langchain_core.output_parsers import PydanticOutputParser
 from pydantic import BaseModel
 from config import settings
 from agents import Agent, Runner, SQLiteSession, function_tool, set_default_openai_key
+from agents.extensions.handoff_prompt import RECOMMENDED_PROMPT_PREFIX
 
 db = {
     "job_descriptions": {
@@ -26,7 +27,7 @@ def extract_skills(session_id: str, job_id: int) -> list[str]:
     job_description = db["job_descriptions"][job_id]
     skills = ["Python", "SQL", "System Design"]
     db["state"][session_id]["skills"] = skills
-    print(f"\n📋 Extracted skills: {', '.join(skills)}")
+    print(f"Extracted skills: {skills}")
     return skills
 
 @function_tool
@@ -41,14 +42,24 @@ def update_evaluation(session_id: str, skill: str, evaluation_result: bool) -> b
     except KeyError:
         return False
 
-@function_tool
-def transfer_to_skill_evaluator(session_id: str, skill: str) -> bool:
-    """This function takes a skill, evaluates it and returns the evaluation result for the skill as a boolean pass / fail"""
-    result = True
-    print(f"Evaluating skill: {skill}. Result {result}")
-    return result
+@function_tool   
+def get_next_skill_to_evaluate(session_id: str) -> str | None:
+    """Retrieve the next skill to evaluate. Returns None if there are no more skills to evaluate"""
+    all_skills = db["state"][session_id]["skills"]
+    evaluated = db["state"][session_id]["evaluation"]
+    evaluated_skills = [item[0] for item in evaluated]
+    remaining_skills = set(all_skills) - set(evaluated_skills)
+    try:
+        next_skill = remaining_skills.pop()
+        print("NEXT SKILL TOOL", next_skill)
+        return next_skill
+    except KeyError:
+        print("No more skills")
+        return None
 
 ORCHESTRATOR_SYSTEM_PROMPT = """
+{RECOMMENDED_PROMPT_PREFIX}
+
 You are an interview orchestrator. Your goal is to evaluate the candidate on the required skills.
 
 # INSTRUCTIONS
@@ -57,9 +68,10 @@ Follow the following steps exactly
 
 1. Extract key skills from the job description using extract_skills tool
 2. Then welcome the candidate, explain the screening process and ask the candidate if they are ready 
-3. Then, for EACH skill in the list, use transfer_to_skill_evaluator tool to delegate evaluation
+3. Then, use the get_next_skill_to_evaluate tool to get the skill to evaluate
+4. If the skill is not `None` then hand off to the "Skills Evaluator Agent" to perform the evaluation. Pass in the skill to evaluate
 4. Once you get the response, use the update_evaluation tool to save the evaluation result into the database
-5. Once all skills are evaluated, mention that the screening is complete and thank the candidate for their time
+5. Once get_next_skill_to_evaluate returns `None`, return a json with a single field `status` set to "done" to indicate completion
 """
 
 ORCHESTRATOR_USER_PROMPT = """
@@ -70,21 +82,6 @@ job_id: {job_id}
 
 Begin by welcoming the applicant, extracting the key skills, then evaluate each one.
 """
-
-def run_orchestrator_agent(session_id, job_id):
-    session = SQLiteSession(f"screening-{session_id}")
-    agent = Agent(
-        name="Interview Orchestrator Agent",
-        instructions=ORCHESTRATOR_SYSTEM_PROMPT,
-        model="gpt-5.1",
-        tools=[extract_skills, transfer_to_skill_evaluator, update_evaluation]
-    )
-    user_input = ORCHESTRATOR_USER_PROMPT.format(job_id=job_id, session_id=session_id)
-    while user_input != 'bye':
-        result = Runner.run_sync(agent, user_input, session=session)
-        print(result.final_output)
-        user_input = input("User: ")
-    return
 
 question_bank = {
     "python": {
@@ -179,6 +176,8 @@ def check_answer(skill:str, question: str, answer: str) -> Tuple[bool, str]:
     return result.model_dump_json()
 
 EVALUATION_SYSTEM_PROMPT = """
+{RECOMMENDED_PROMPT_PREFIX}
+
 You are a specialised skill evaluator. Your job is to evaluate the candidate's proficiency in a given skill
 
 1. Identify which skill you're evaluating (it will be mentioned in the conversation)
@@ -189,11 +188,14 @@ You are a specialised skill evaluator. Your job is to evaluate the candidate's p
    - If the check_answer tool returned incorrect, choose the lower difficulty, without going below 'easy'
    - Stop after 3 questions MAXIMUM
 5. If the correctly answered two of the three questions, then they pass, otherwise they fail
+6. After completion of 3 questions, hand off to the "Interview Orchestrator Agent" passing in the result of the evaluation
 
-DECISION RULES:
-- Maximum 3 questions per skill
+# DECISION RULES:
 
-OUTPUT:
+- Do not give feedback on the user's answer. Always proceed to the next question
+- 3 questions per skill
+
+# OUTPUT:
 
 After the evaluation is complete, return the pass/fail in a json object with the following properties
 - result: true or false
@@ -203,17 +205,27 @@ EVALUATION_USER_PROMPT = """
 Evaluate the user on the following skill: {skill}
 """
 
-def run_evaluation_agent(session_id, skill):
+def run(session_id, job_id):
     session = SQLiteSession(f"screening-{session_id}")
-    agent = Agent(
+    orchestrator_agent = Agent(
+        name="Interview Orchestrator Agent",
+        instructions=ORCHESTRATOR_SYSTEM_PROMPT.format(RECOMMENDED_PROMPT_PREFIX=RECOMMENDED_PROMPT_PREFIX),
+        model="gpt-5.1",
+        tools=[extract_skills, get_next_skill_to_evaluate, update_evaluation]
+    )
+    evaluation_agent = Agent(
         name="Skills Evaluator Agent",
-        instructions=EVALUATION_SYSTEM_PROMPT,
+        instructions=EVALUATION_SYSTEM_PROMPT.format(RECOMMENDED_PROMPT_PREFIX=RECOMMENDED_PROMPT_PREFIX),
         model="gpt-5.1",
         tools=[get_question, check_answer]
     )
-    user_input = EVALUATION_USER_PROMPT.format(skill=skill)
+    orchestrator_agent.handoffs = [evaluation_agent]
+    evaluation_agent.handoffs = [orchestrator_agent]
+    user_input = ORCHESTRATOR_USER_PROMPT.format(job_id=job_id, session_id=session_id)
+    agent = orchestrator_agent
     while user_input != 'bye':
-        result = Runner.run_sync(agent, user_input, session=session)
+        result = Runner.run_sync(agent, user_input, session=session, max_turns=20)
+        agent = result.last_agent
         print(result.final_output)
         user_input = input("User: ")
 
@@ -221,7 +233,8 @@ def main():
     set_default_openai_key(settings.OPENAI_API_KEY)
     job_id = 1
     session_id = "session123"
-    run_evaluation_agent(session_id, "Python")
+    run(session_id, job_id)
+    print("FINAL EVALUATION STATE", db)
 
 if __name__ == "__main__":
     main()

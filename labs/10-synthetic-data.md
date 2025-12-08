@@ -64,3 +64,7 @@ Include only 1 example per dimension_example.
 </dimension_examples>
 ```
 </details>
+
+## Discussion Questions
+
+1. What are the pitfalls of synthetic data generation?

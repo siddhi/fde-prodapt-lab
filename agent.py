@@ -3,6 +3,7 @@ import json
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from config import settings
+from agents import Agent, Runner, SQLiteSession, function_tool, set_default_openai_key
 
 db = {
     "job_descriptions": {
@@ -16,7 +17,7 @@ db = {
     }
 }
 
-
+@function_tool
 def extract_skills(session_id: str, job_id: int) -> list[str]:
     """Given a job_id, lookup job descriptiona and extract the skills for that job description"""
     job_id = int(job_id)
@@ -25,7 +26,8 @@ def extract_skills(session_id: str, job_id: int) -> list[str]:
     db["state"][session_id]["skills"] = skills
     print(f"\n📋 Extracted skills: {', '.join(skills)}")
     return skills
-  
+
+@function_tool
 def update_evaluation(session_id: str, skill: str, evaluation_result: bool) -> bool:
     """This function takes the session_id, skill, and the evaluation result and saves it to the database. Returns success or failure (bool)"""
     try:
@@ -37,17 +39,12 @@ def update_evaluation(session_id: str, skill: str, evaluation_result: bool) -> b
     except KeyError:
         return False
 
+@function_tool
 def transfer_to_skill_evaluator(session_id: str, skill: str) -> bool:
     """This function takes a skill, evaluates it and returns the evaluation result for the skill as a boolean pass / fail"""
     result = True
     print(f"Evaluating skill: {skill}. Result {result}")
     return result
-
-tools_mapping = {
-    "extract_skills": extract_skills,
-    "update_evaluation": update_evaluation,
-    "transfer_to_skill_evaluator": transfer_to_skill_evaluator
-}
 
 ORCHESTRATOR_SYSTEM_PROMPT = """
 You are an interview orchestrator. Your goal is to evaluate the candidate on the required skills.
@@ -61,48 +58,6 @@ Follow the following steps exactly
 3. Then, for EACH skill in the list, use transfer_to_skill_evaluator tool to delegate evaluation
 4. Once you get the response, use the update_evaluation tool to save the evaluation result into the database
 5. Once all skills are evaluated, mention that the screening is complete and thank the candidate for their time
-
-# OUTPUT FORMAT
-
-Output as a JSON following the JSON schema below:
-
-```
-{{
-    "type": "object",
-    "properties": {{
-        "response": {{ "type": "string" }}
-        "tool_name": {{ "type": "string"}},
-        "tool_params": {{
-            "type": "array",
-            "items": {{
-                "type": "object",
-                "properties": {{
-                    "param": {{ "type": "string" }},
-                    "value": {{ "type": "string" }}
-                }}
-            }}
-        }}
-    }},
-    "required": []
-}}
-
-Use the "tool_name" and "tool_params" properties to execute a tool and use the "response" property to reply to the user without a tool call. 
-
-# TOOLS
-
-You have access to the following tools
-
-1. `extract_skills(session_id: str, job_id: int) -> list[str]`
-
-Given a job_id, lookup job descriptiona and extract the skills for that job description
-
-2. `update_evaluation(session_id: str, skill: str, evaluation_result: bool) -> bool`
-
-This function takes the session_id, skill, and the evaluation result and saves it to the database. Returns success or failure (bool)
-
-3. `transfer_to_skill_evaluator(session_id, skill: str) -> bool`
-
-This function takes a skill, evaluates it and returns the evaluation result for the skill as a boolean pass / fail
 """
 
 ORCHESTRATOR_USER_PROMPT = """
@@ -115,33 +70,22 @@ Begin by welcoming the applicant, extracting the key skills, then evaluate each 
 """
 
 def run_orchestrator_agent(session_id, job_id):
-    llm = ChatOpenAI(model="gpt-5.1", temperature=0, api_key=settings.OPENAI_API_KEY)
-    messages = [
-        ("system", ORCHESTRATOR_SYSTEM_PROMPT),
-        ("human", ORCHESTRATOR_USER_PROMPT),
-    ]
-    user_reply = ""
-    while user_reply != "bye":
-        orchestrator_prompt = ChatPromptTemplate.from_messages(messages)
-        orchestrator_chain = orchestrator_prompt | llm
-        output = orchestrator_chain.invoke({"job_id": job_id, "session_id": session_id})
-        data = json.loads(output.content)
-        print(f"Output by LLM: {data}")
-        if "response" in data:
-            print(data["response"])
-        if "tool_name" in data and data["tool_name"] != "":
-            tool_name = data["tool_name"]
-            params = {param["param"]: param["value"] for param in data["tool_params"]}
-            tools = tools_mapping[tool_name]
-            tool_output = tools(**params)
-            print(f"TOOL OUTPUT = {tool_output}")
-            messages.append(("assistant", output.content.replace("{", "{{").replace("}", "}}")))
-            messages.append(("ai", str(tool_output)))
-        else:
-            user_reply = input("User: ")
-            messages.append(("human", user_reply))
+    session = SQLiteSession(f"screening-{session_id}")
+    agent = Agent(
+        name="Interview Orchestrator Agent",
+        instructions=ORCHESTRATOR_SYSTEM_PROMPT,
+        model="gpt-5.1",
+        tools=[extract_skills, transfer_to_skill_evaluator, update_evaluation]
+    )
+    user_input = ORCHESTRATOR_USER_PROMPT.format(job_id=job_id, session_id=session_id)
+    while user_input != 'bye':
+        result = Runner.run_sync(agent, user_input, session=session)
+        print(result.final_output)
+        user_input = input("User: ")
+    return
 
 def main():
+    set_default_openai_key(settings.OPENAI_API_KEY)
     job_id = 1
     session_id = "session123"
     run_orchestrator_agent(session_id, job_id)

@@ -1,7 +1,9 @@
-import asyncio
-import json
+import random
+from typing import Literal, Tuple
 from langchain_openai import ChatOpenAI
-from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.prompts import ChatPromptTemplate, PromptTemplate
+from langchain_core.output_parsers import PydanticOutputParser
+from pydantic import BaseModel
 from config import settings
 from agents import Agent, Runner, SQLiteSession, function_tool, set_default_openai_key
 
@@ -84,12 +86,142 @@ def run_orchestrator_agent(session_id, job_id):
         user_input = input("User: ")
     return
 
+question_bank = {
+    "python": {
+        "easy": [
+            "If `d` is a dictionary, then what does `d['name'] = 'Siddharta'` do?",
+            "if `l1` is a list and `l2` is a list, then what is `l1 + l2`?",
+        ],
+        "medium": [
+            "How do you remove a key from a dictionary?",
+            "How do you reverse a list in python?"
+        ],
+        "hard": [
+            "If `d` is a dictionary, then what does `d.get('name', 'unknown')` do?",
+            "What is the name of the `@` operator (Example `a @ b`) in Python?"
+        ]
+    },
+    "sql": {
+        "easy": [
+            "What does LIMIT 1 do at the end of a SQL statement?",
+            "Explain this SQL: SELECT product_name FROM products WHERE cost < 500'"
+        ],
+        "medium": [
+            "What is a view in SQL?",
+            "How do we find the number of records in a table called `products`?"
+        ],
+        "hard": [
+            "What is the difference between WHERE and HAVING in SQL?",
+            "Name a window function in SQL"
+        ]
+    },
+    "system design": {
+        "easy": [
+            "Give one reason where you would prefer a SQL database over a Vector database",
+            "RAG requires a vector database. True or False?"
+        ],
+        "medium": [
+            "Give one advantage and one disadvantage of chaining multiple prompts?",
+            "Mention three reasons why we may not want to use the most powerful model?"
+        ],
+        "hard": [
+            "Mention ways to speed up retrieval from a vector database",
+            "Give an overview of Cost - Accuracy - Latency tradeoffs in an AI system"
+        ]
+    }
+}
+
+@function_tool
+def get_question(topic: str, difficulty: Literal['easy', 'medium', 'hard']) -> str:
+    """Return a question from the question bank given a topic and the difficulty of the question"""
+    questions = question_bank[topic.lower()][difficulty.lower()]
+    return random.choice(questions)
+
+VALIDATION_PROMPT = """
+Evaluate the given interview answer. 
+
+# Instructions
+
+Provide a JSON response with: 
+- correct: true or false depending if the answer was correct or not for the given question in the context of the given skill. 
+- reasoning: brief explanation (2-3 sentences) 
+
+For subjective answers, mark the answer true if the majority of the important points have been mentioned.
+
+Answers are expected to be brief, so be rigorous but fair. Look for technical accuracy and clarity. 
+
+# Output Format
+
+{format_instructions}
+
+# Task
+
+Skill: {skill} 
+Question: {question} 
+Answer: 
+{answer}
+
+Evaluation:"""
+
+class ValidationResult(BaseModel):
+    correct: bool
+    reasoning: str
+
+@function_tool
+def check_answer(skill:str, question: str, answer: str) -> Tuple[bool, str]:
+    """Given a question and an answer for a particular skill, validate if the answer is correct. Returns a tuple (correct, reasoning)"""
+
+    llm = ChatOpenAI(model="gpt-5.1", temperature=0, api_key=settings.OPENAI_API_KEY)
+    parser = PydanticOutputParser(pydantic_object=ValidationResult)
+    prompt = PromptTemplate.from_template(VALIDATION_PROMPT).partial(format_instructions=parser.get_format_instructions())
+    chain = prompt | llm | parser
+    result = chain.invoke({"skill": skill, "question": question, "answer": answer})
+    return result.model_dump_json()
+
+EVALUATION_SYSTEM_PROMPT = """
+You are a specialised skill evaluator. Your job is to evaluate the candidate's proficiency in a given skill
+
+1. Identify which skill you're evaluating (it will be mentioned in the conversation)
+2. Use the get_question tool to get a question to ask (start with 'medium' difficulty). Ask the question verbatim, DO NOT MODIFY it in any way
+3. After each candidate answer, use check_answer tool to evaluate
+4. Decide the next question:
+   - If the check_answer tool returned correct, choose the next higher difficulty, without going above 'hard'
+   - If the check_answer tool returned incorrect, choose the lower difficulty, without going below 'easy'
+   - Stop after 3 questions MAXIMUM
+5. If the correctly answered two of the three questions, then they pass, otherwise they fail
+
+DECISION RULES:
+- Maximum 3 questions per skill
+
+OUTPUT:
+
+After the evaluation is complete, return the pass/fail in a json object with the following properties
+- result: true or false
+"""
+
+EVALUATION_USER_PROMPT = """
+Evaluate the user on the following skill: {skill}
+"""
+
+def run_evaluation_agent(session_id, skill):
+    session = SQLiteSession(f"screening-{session_id}")
+    agent = Agent(
+        name="Skills Evaluator Agent",
+        instructions=EVALUATION_SYSTEM_PROMPT,
+        model="gpt-5.1",
+        tools=[get_question, check_answer]
+    )
+    user_input = EVALUATION_USER_PROMPT.format(skill=skill)
+    while user_input != 'bye':
+        result = Runner.run_sync(agent, user_input, session=session)
+        print(result.final_output)
+        user_input = input("User: ")
+
 def main():
     set_default_openai_key(settings.OPENAI_API_KEY)
     job_id = 1
     session_id = "session123"
-    run_orchestrator_agent(session_id, job_id)
-    print(f"FINAL EVALUATION STATUS: {db['state'][session_id]}")
+    run_evaluation_agent(session_id, "Python")
 
 if __name__ == "__main__":
     main()

@@ -211,3 +211,4 @@ uploads/
 notes.md
 qdrant_store/
 .vscode/
+.braintrust

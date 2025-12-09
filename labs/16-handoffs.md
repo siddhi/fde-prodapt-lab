@@ -94,7 +94,6 @@ After the evaluation is complete, return the pass/fail in a json object with the
     agent = orchestrator_agent
     while user_input != 'bye':
         result = Runner.run_sync(agent, user_input, session=session, max_turns=20)
-        agent = result.last_agent
         print(result.final_output)
         user_input = input("User: ")
 ```

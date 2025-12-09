@@ -225,7 +225,6 @@ def run(session_id, job_id):
     agent = orchestrator_agent
     while user_input != 'bye':
         result = Runner.run_sync(agent, user_input, session=session, max_turns=20)
-        agent = result.last_agent
         print(result.final_output)
         user_input = input("User: ")
 

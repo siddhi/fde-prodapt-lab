@@ -112,6 +112,8 @@ def main():
 
 And run the code
 
+**Note**: There is intentionally a bug in the code. We will fix it in the next lab
+
 ## Hints
 
 ### How to implement get_next_skill_to_evaluate?

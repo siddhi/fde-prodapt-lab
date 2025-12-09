@@ -5,8 +5,10 @@ from langchain_core.prompts import ChatPromptTemplate, PromptTemplate
 from langchain_core.output_parsers import PydanticOutputParser
 from pydantic import BaseModel
 from config import settings
-from agents import Agent, Runner, SQLiteSession, function_tool, set_default_openai_key
+from agents import Agent, Runner, SQLiteSession, function_tool, set_default_openai_key, set_trace_processors
 from agents.extensions.handoff_prompt import RECOMMENDED_PROMPT_PREFIX
+from braintrust import init_logger
+from braintrust.wrappers.openai import BraintrustTracingProcessor
 
 db = {
     "job_descriptions": {
@@ -230,6 +232,7 @@ def run(session_id, job_id):
         user_input = input("User: ")
 
 def main():
+    set_trace_processors([BraintrustTracingProcessor(init_logger("Prodapt", api_key=settings.BRAINTRUST_API_KEY))])
     set_default_openai_key(settings.OPENAI_API_KEY)
     job_id = 1
     session_id = "session123"

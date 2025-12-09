@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     OPENAI_API_KEY: str
     QDRANT_API_KEY: str
     QDRANT_URL: AnyUrl
+    BRAINTRUST_API_KEY: str
     IS_CI: bool = False
 
     class Config:

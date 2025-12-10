@@ -11,6 +11,7 @@ In this lab, we will integrate the OpenAI Agents SDK with Braintrust Observabili
 
 ## Configure the app
 
+1. Update `requirements.txt` with `braintrust[openai-agents]==0.3.12` and install the requirements
 1. To the `.env` file add `BRAINTRUST_API_KEY=...`
 1. Update `config.py` and add the setting `BRAINTRUST_API_KEY: str`
 1. Open `agent.py`

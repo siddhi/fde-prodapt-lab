@@ -51,3 +51,13 @@ These API calls happen in our agent code as well. When we configure the MCP serv
 - Get a list of tools
 - These tools will be added to the prompt automatically
 - When the LLM returns a tool call, the agent will make a call to the MCP server with the defined parameters to get the response
+
+# Explore Github MCP Server
+
+Github MCP Server is located at url `https://api.githubcopilot.com/mcp`
+
+Use bruno to find which tools are available on Github MCP Server
+
+**Note**: Github MCP Server requires authorisation. Go to Github and create a Personal Access Token (Create it here - https://github.com/settings/personal-access-tokens)
+
+For all calls you will have to add the `Authorization` header with value `Bearer <token>`

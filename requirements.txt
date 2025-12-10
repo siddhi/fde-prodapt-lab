@@ -23,3 +23,4 @@ langchain-openai==1.1.0 # Langchain Open AI interface
 langchain-qdrant==1.1.0 # Langchain with Qdrant vector DB
 openai-agents==0.6.2 # OpenAI Agent SDK
 braintrust[openai-agents]==0.3.12 # Braintrust observability
+braintrust-langchain==0.1.5 # Langchain integration with braintrust

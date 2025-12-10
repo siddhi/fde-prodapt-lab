@@ -7,12 +7,16 @@ from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import PydanticOutputParser
 from langchain_qdrant import QdrantVectorStore
+from braintrust import init_logger, traced
+from braintrust_langchain import BraintrustCallbackHandler, set_global_handler
 from qdrant_client import QdrantClient
 from qdrant_client.http.models import Distance, VectorParams
 
 from config import settings
 
 client = OpenAI(api_key = settings.OPENAI_API_KEY)
+init_logger(project="Prodapt", api_key=settings.BRAINTRUST_API_KEY)
+set_global_handler(BraintrustCallbackHandler())
 
 resume_eval_prompt = """
 You are an expert hiring screener. Given the candidate resume text and a job description, evaluate candidate's fit.
@@ -197,6 +201,7 @@ Create the final polished job description by integrating the improvements.
 Return only the final text.
 """
 
+@traced(name="Review Job Description")
 def review_application(job_description: str) -> ReviewedApplication:
     llm = ChatOpenAI(model="gpt-5.1", temperature=0, api_key=settings.OPENAI_API_KEY)
 

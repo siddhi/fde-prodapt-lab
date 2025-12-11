@@ -17,6 +17,9 @@
           RESEND_API_KEY: "test"
           OPENAI_API_KEY: "test"
           IS_CI: "true"
+          BRAINTRUST_API_KEY: "test"
+          QDRANT_API_KEY: "test"
+          QDRANT_URL: "http://www.example.com"
         steps:
         - name: Checkout code
           uses: actions/checkout@v4
